@@ -15,7 +15,7 @@ public class EventTrigger : MonoBehaviour
     float time;
     bool timerStart;
     public bool isNecessary;
-    public bool isArtEventTriggerOff;
+    public bool isEventTriggerOff;
     WindowSound windowSound;
 
     // public bool isArtEventTriggerOn;
@@ -43,7 +43,13 @@ public class EventTrigger : MonoBehaviour
             vpad_btnX = vpad.buttonX;
             vpad_btnY = vpad.buttonY;
         }
-        if(gameObject.name == "waitTrigger")
+        //1층 지도
+        if (gameObject.name == "1층게시판")
+        {
+            Inventory.instance.GetItem(1012);
+
+        }
+        if (gameObject.name == "waitTrigger")
         {
             if (GameManager.instance.playerRepeat == 4)
             {
@@ -109,7 +115,9 @@ public class EventTrigger : MonoBehaviour
 
                         //미술창고이벤트
                         ArtStorageEvent();
-
+                        
+                        //2층 인형 이벤트
+                        DollEvent(); 
                         // isTrigger = false;
                         isButton = false;
                         
@@ -178,7 +186,15 @@ public class EventTrigger : MonoBehaviour
             isTrigger = false;
         }
     }
+    void DollEvent()
+    {
+        if (gameObject.name == "무언가를 찾는 학생")
+        {
+            GameManager.instance.isDollEvent = true;
+           // Inventory.instance.GetItem(1003);
 
+        }
+    }
     
     void ArtClassEvent()
     {
@@ -226,6 +242,7 @@ public class EventTrigger : MonoBehaviour
         else if (gameObject.name == "종이")//물
         {
             GameManager.instance.isArtEvent = true;
+            Inventory.instance.GetItem(1003);
 
         }
         else if (gameObject.name == "미술실칠판")//미술실창고열쇠

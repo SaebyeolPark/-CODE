@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class FirstEnemyMain : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class FirstEnemyMain : MonoBehaviour
     float yDir;
     public bool isSceneLoad=false;
     public Sprite npcSprite;
+    public GameObject deadEnding;
 
     void Awake()
     {
@@ -65,6 +67,29 @@ public class FirstEnemyMain : MonoBehaviour
                     GameManager.instance.repeat = 12;
                     transform.Translate(-1, 0, 0);
                 }*/
+            }
+        }
+
+        if (deadEnding.gameObject.activeSelf==true)
+        {
+            Debug.Log("ENTERED ENEMY deadending true");
+
+            if (Input.GetButtonDown("Fire1"))
+            {
+                Debug.Log("ENTERED ENEMY click");
+
+                deadEnding.gameObject.SetActive(false);
+                SceneManager.LoadScene("Menu");
+                CameraMove.instance.gameObject.transform.position = new Vector3(0, 0, -10);
+                // menuController.panel.SetActive(true);
+                //   GameManager.instance.isControl = false;
+                // GameManager.instance.isEnding = false;
+                PlayerMain.instance.gameObject.transform.position = new Vector3(8, 3, 0);
+                //   transform.rotation = Quaternion.Euler(new Vector3(00, 0, 0));
+                transform.position = new Vector3(10, -4, 0);
+                GameManager.instance.isGameOver = false;
+
+                //  FirstEnemyMain.instance.gameObject.SetActive(false);
             }
         }
     }
@@ -128,13 +153,28 @@ public class FirstEnemyMain : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "PlayerTrigger")
         {
-            Time.timeScale = 0;
-            Debug.Log("ENTERED ENEMY");
+          //  Time.timeScale = 0;
             gameObject.transform.position = collision.gameObject.transform.position;
             GameManager.instance.isControl = false;
             GameManager.instance.isGameOver = true;
+//move menu 
+            deadEnding.gameObject.SetActive(true);
+           /* if (Input.GetButtonDown("Fire1"))
+            {
+                Debug.Log("ENTERED ENEMY click");
+
+                deadEnding.gameObject.SetActive(false);
+                SceneManager.LoadScene("Menu");
+                // menuController.panel.SetActive(true);
+             //   GameManager.instance.isControl = false;
+               // GameManager.instance.isEnding = false;
+                  PlayerMain.instance.gameObject.transform.position = new Vector3(8, 3, 0);
+             //   transform.rotation = Quaternion.Euler(new Vector3(00, 0, 0));
+                  transform.position = new Vector3(10, -3, 0);
+              //  FirstEnemyMain.instance.gameObject.SetActive(false);
+            }*/
         }
     }
 

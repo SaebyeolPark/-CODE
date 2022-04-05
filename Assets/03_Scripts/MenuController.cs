@@ -29,7 +29,15 @@ public class MenuController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (PlayerMain.instance.currentSceneName == "Menu")
+        {
+            panel.gameObject.SetActive(true);
+        }
+        else
+        {
+            panel.gameObject.SetActive(false);
+
+        }
     }
    public void ExitButton()
     {

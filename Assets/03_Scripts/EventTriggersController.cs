@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArtEventController : MonoBehaviour
+public class EventTriggersController : MonoBehaviour
 {
     public GameObject[] onTriggers;
     private EventTrigger[] offTriggers;    // Start is called before the first frame update
@@ -22,9 +22,9 @@ public class ArtEventController : MonoBehaviour
         {
             for (int i = 0; i < offTriggers.Length; i++)
             {
-                if (offTriggers[i].isArtEventTriggerOff)
+                if (offTriggers[i].isEventTriggerOff)
                 {
-                    offTriggers[i].gameObject.SetActive(false);
+                    offTriggers[i].gameObject.SetActive(false); //ARTEVENTTRIGGEROFF가 켜져있다면 숨기기
                 }
             }
             for(int i=0; i<onTriggers.Length; i++)
@@ -46,8 +46,22 @@ public class ArtEventController : MonoBehaviour
                     onTriggers[i].SetActive(false);
             }
         }
-        
 
+        if (GameManager.instance.isDollEvent)
+        {
+            for (int i = 0; i < offTriggers.Length; i++)
+            {
+                
+                    offTriggers[i].gameObject.SetActive(false); //ARTEVENTTRIGGEROFF가 켜져있다면 숨기기
+                
+            }
+            for (int i = 0; i < onTriggers.Length; i++)
+            {
+                onTriggers[i].SetActive(true);
+
+            }
+        }
+      
 
     }
 }

@@ -30,6 +30,7 @@ public class PlayerMain : MonoBehaviour
     public GameObject nameplate;
     public GameObject endingIllu;
     GameObject scanObject;
+    ZiyuMove ziyuMove;
 
     NpcMove npcMove;
 
@@ -138,12 +139,12 @@ public class PlayerMain : MonoBehaviour
         vpadverMv = Mathf.Pow(Mathf.Abs(vpadverMv), 1.5f) * Mathf.Sign(vpadverMv);
 
 
-        if (vpad_btnA == zFOXVPAD_BUTTON.DOWN && isPressed == false)
+        if (vpad_btnX == zFOXVPAD_BUTTON.DOWN)
         {
-            //saveNLoad.CallSave();
-          //  saveNLoadPanel.SetActive(true);
-            vpad_btnA = zFOXVPAD_BUTTON.NON;
-           // GameManager.instance.isControl = false;
+           // saveNLoad.CallSave();
+            saveNLoadPanel.SetActive(true);
+           // vpad_btnA = zFOXVPAD_BUTTON.NON;
+            GameManager.instance.isControl = false;
 
         }
         if (vpad_btnB == zFOXVPAD_BUTTON.DOWN)
@@ -169,6 +170,9 @@ public class PlayerMain : MonoBehaviour
             } else if (isArtTrigger==true)
             {
                 ArtEventMove();
+            }else if (GameManager.instance.end1Floor == true && GameManager.instance.secondFloorFirst == false && currentSceneName == "2FloorLeftS")
+            {
+                SecondFloorStart();
             }
         }
  //move
@@ -249,6 +253,7 @@ public class PlayerMain : MonoBehaviour
         //}
 
     }
+    //1층
     void OpeningMove()
     {
         //5층 오프닝
@@ -594,7 +599,7 @@ public class PlayerMain : MonoBehaviour
                     // Right.eulerAngles = new Vector3(0, 0, 90);
                     transform.rotation = Quaternion.Euler(new Vector3(00, 0, 90));
                     timer += Time.deltaTime;
-                    if (timer > 1.2f)
+                    if (timer > 0.8f)
                     {
                         isEndingCamera = true;
 
@@ -616,7 +621,7 @@ public class PlayerMain : MonoBehaviour
                 GameManager.instance.Pause();
                 timer += Time.deltaTime;
                 isOpeningEnenmy = true;
-                if (timer > 1.5f)
+                if (timer > 1.2f)
                 {
                     isOpeningEnenmy = false;
                     GameManager.instance.playerRepeat = 19;
@@ -628,7 +633,7 @@ public class PlayerMain : MonoBehaviour
                 GameManager.instance.Pause();
                 timer += Time.deltaTime;
                 isOpeningEnenmy = true;
-                if (timer > 1.5f)
+                if (timer > 1.2f)
                 {
                     isOpeningEnenmy = false;
                     GameManager.instance.playerRepeat = 22;
@@ -640,7 +645,7 @@ public class PlayerMain : MonoBehaviour
                 GameManager.instance.Pause();
                 timer += Time.deltaTime;
                 isOpeningEnenmy = true;
-                if (timer > 1.5f)
+                if (timer > 1.2f)
                 {
                     isOpeningEnenmy = false;
                     GameManager.instance.playerRepeat = 29;
@@ -669,24 +674,88 @@ public class PlayerMain : MonoBehaviour
 
                     if (Input.GetButtonDown("Fire1"))
                     {
-                        SceneManager.LoadScene("2FloorCenter");
+                    GameManager.instance.isArtEvent = false;
+                    GameManager.instance.end1Floor = true;
+                        SceneManager.LoadScene("2FloorLeftS");
                         endingIllu.SetActive(false);
                        // menuController.panel.SetActive(true);
                         GameManager.instance.isControl = false;
                         isEndingCamera = false;
                        GameManager.instance.isEnding = false;
-                      //  transform.position = new Vector3(8, 3, 0);
+                      transform.position = new Vector3(-4.15f, -2.75f, 0);
                         transform.rotation = Quaternion.Euler(new Vector3(00, 0, 0));
                     //  FirstEnemyMain.instance.transform.position = new Vector3(10, -3, 0);
                     FirstEnemyMain.instance.gameObject.SetActive(false);
-                    }
-                    // GameManager.instance.playerRepeat = 18;
+                    GameManager.instance.playerRepeat = 0;
+                   // GameManager.instance.SecondFirst = true;
+                    GameManager.instance.talkIndex = 53;
+                    CameraMove.instance.gameObject.transform.position = new Vector3(0, 0, -10);
                 }
+                // GameManager.instance.playerRepeat = 18;
+            }
 
             }
            
         
         }
+    //1층끝
+
+    //2층시작
+    void SecondFloorStart()
+    {
+        if (transform.position.y >= 0.0f)
+        {
+            if (transform.position.x >= -0.15f)
+            {
+                if (GameManager.instance.playerRepeat == 13)
+                {
+                    GameManager.instance.Pause();
+                    GameManager.instance.isControl = true;
+                    ziyu.SetActive(false);
+                    GameManager.instance.talkIndex = 0;
+                    GameManager.instance.secondFloorFirst = true;
+                }
+                else
+                {
+                    animator.speed = 0;
+                    animator.SetBool("isFront", false);
+                    animator.SetBool("isRight", true);
+                    animator.SetBool("isBack", false);
+                    animator.SetBool("isLeft", false);
+                    GameManager.instance.isDialog = true;
+                    GameManager.instance.Action(gameObject);
+                    ziyuMove = FindObjectOfType<ZiyuMove>();
+                    ziyuMove.StopAnimation();
+                    ziyu.transform.rotation = Quaternion.Euler(new Vector3(00, 180, 0));
+
+                }
+            }
+            else
+            {
+                ziyuMove = FindObjectOfType<ZiyuMove>();
+                ziyuMove.RightMove();
+                ziyu.SetActive(true);
+                animator.speed = 1;
+                animator.SetBool("isLeft", false);
+                animator.SetBool("isRight", true);
+                animator.SetBool("isBack", false);
+                animator.SetBool("isFront", false);
+                transform.Translate(speed * Time.deltaTime * Vector2.right);
+            }
+        }
+        else
+        {
+            ziyu.SetActive(true);
+            ziyuMove= FindObjectOfType<ZiyuMove>();
+            ziyuMove.BackMove();
+            animator.speed = 1;
+            animator.SetBool("isLeft", false);
+            animator.SetBool("isRight", false);
+            animator.SetBool("isBack", true);
+            animator.SetBool("isFront", false);
+            transform.Translate(speed * Time.deltaTime * Vector2.up);
+        }
+    }
 
         
     
@@ -722,11 +791,11 @@ public class PlayerMain : MonoBehaviour
         vpadverMv = Mathf.Pow(Mathf.Abs(vpadverMv), 1.5f) * Mathf.Sign(vpadverMv);
        
 
-        if (vpad_btnX == zFOXVPAD_BUTTON.DOWN && isPressed==false)
+        if (vpad_btnX == zFOXVPAD_BUTTON.DOWN )
         {         
             //saveNLoad.CallSave();
             saveNLoadPanel.SetActive(true);
-           vpad_btnX = zFOXVPAD_BUTTON.NON;
+          // vpad_btnX = zFOXVPAD_BUTTON.NON;
             GameManager.instance.isControl = false;
            
         }

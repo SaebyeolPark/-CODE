@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance =null;
-
     public PlayerMain player;
     public TalkManager talkManager;
     public bool isControl;
@@ -37,6 +36,11 @@ public class GameManager : MonoBehaviour
     public bool firstEnterNurseRoom;
     public bool firstEnterArtEventFloor;
     public bool isGameOver;
+    public bool end1Floor; //1층 끝
+    //2층시작
+    public bool secondFloorFirst;
+    public bool isDollEvent; //인형이벤트
+
     public void Action(GameObject scanObj)
     {
         scanObject = scanObj;
@@ -113,7 +117,7 @@ public class GameManager : MonoBehaviour
             {
                 portraitImg.sprite = talkManager.GetPortrait(int.Parse(talkData.Split(':')[1]));
                 portraitImg.color = new Color(1, 1, 1, 1);
-                if (int.Parse(talkData.Split(':')[1]) == 0)
+                if (int.Parse(talkData.Split(':')[1]) == 0|| int.Parse(talkData.Split(':')[1]) == 4|| int.Parse(talkData.Split(':')[1]) == 6)
                     scanName = "고은비";
                 else if (int.Parse(talkData.Split(':')[1]) == 1)
                 {
@@ -125,6 +129,16 @@ public class GameManager : MonoBehaviour
                     scanName = "침대에 누운 학생";
                     portraitImg.color = new Color(1, 1, 1, 0);
                 }
+                else if (int.Parse(talkData.Split(':')[1]) == 3|| int.Parse(talkData.Split(':')[1]) == 5)
+                {
+                    scanName = "이지유";
+                  //  portraitImg.color = new Color(1, 1, 1, 0);
+                }
+                else if (int.Parse(talkData.Split(':')[1]) == 7)
+                {
+                    //scanName = "무언가를 찾는 학생";
+                    portraitImg.color = new Color(1, 1, 1, 0);
+                }
 
             }
             else
@@ -133,7 +147,7 @@ public class GameManager : MonoBehaviour
                 scanName = "";
             }
            
-            UINameText.text = scanName;
+           UINameText.text = scanName;
         }
 
         if (Input.GetButtonDown("Fire1"))

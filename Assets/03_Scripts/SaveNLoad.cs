@@ -35,6 +35,9 @@ public class SaveNLoad : MonoBehaviour
         public bool isGetNameplace;
         public bool firstEnterArtEventFloor;
         public bool isNurseEvent;
+        public bool end1Floor;
+        public bool isDollEvent;
+
     }
 
     private PlayerMain playerMain;
@@ -81,6 +84,8 @@ public class SaveNLoad : MonoBehaviour
         data.isGetNameplace = GameManager.instance.isGetNameplace;
         data.isGetSyringe = GameManager.instance.isGetSyringe;
         data.firstEnterArtEventFloor = GameManager.instance.firstEnterArtEventFloor;
+        data.end1Floor = GameManager.instance.end1Floor;
+        data.isDollEvent = GameManager.instance.isDollEvent;
 
         Debug.Log("기초 데이터 성공");
 
@@ -140,6 +145,8 @@ public class SaveNLoad : MonoBehaviour
             GameManager.instance.isGetNameplace= data.isGetNameplace;
             GameManager.instance.isGetSyringe= data.isGetSyringe;
             GameManager.instance.firstEnterArtEventFloor = data.firstEnterArtEventFloor;
+            GameManager.instance.end1Floor = data.end1Floor;
+            GameManager.instance.isDollEvent = data.isDollEvent;
 
             //인벤토리로드
             List<ItemManager> inventoryList = new List<ItemManager>();

@@ -25,6 +25,8 @@ public class ItemDatabase : MonoBehaviour
         itemList.Add(new ItemManager("주사기", 1009, "This sword is normal style sword"));
         itemList.Add(new ItemManager("주사기피", 1010, "This sword is normal style sword"));
         itemList.Add(new ItemManager("물병", 1011, "This sword is normal style sword"));
+        itemList.Add(new ItemManager("지도", 1012, "This sword is normal style sword"));
+
     }
 
 }

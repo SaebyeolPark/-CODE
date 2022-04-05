@@ -28,6 +28,7 @@ public class LoadSceneTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         //잠김검사
         if (isNurseRoom == true && GameManager.instance.isNurseKey == false)
             isLocked = true;
@@ -156,23 +157,28 @@ public class LoadSceneTrigger : MonoBehaviour
         SceneManager.LoadScene(scene);
         Debug.Log(scene);
         PlayerMain.instance.transform.position = playerVec;
-        //
-        FirstEnemyMain.instance.gameObject.SetActive(false);
-        FirstEnemyMain.instance.transform.position = FirstEnemyVec;
 
-        if (isNurseRoom == false || GameManager.instance.firstEnterNurseRoom == true)
+        //1층만...
+        if (GameManager.instance.end1Floor == false)
         {
-            FirstEnemyMain.instance.isSceneLoad = true;
-        }
-        else
-        {
-            
+            FirstEnemyMain.instance.gameObject.SetActive(false);
+            FirstEnemyMain.instance.transform.position = FirstEnemyVec;
+            if (isNurseRoom == false || GameManager.instance.firstEnterNurseRoom == true)
+            {
+                FirstEnemyMain.instance.isSceneLoad = true;
+            }
+            else
+            {
+
                 GameManager.instance.isNurseEvent = true;
-            
-            GameManager.instance.isControl = false;
-           CameraMove.instance.transform.position = new Vector3(0, 0, CameraMove.instance.transform.position.z);
-            GameManager.instance.talkIndex = 16;
+
+                GameManager.instance.isControl = false;
+                CameraMove.instance.transform.position = new Vector3(0, 0, CameraMove.instance.transform.position.z);
+                GameManager.instance.talkIndex = 16;
+            }
         }
+
+       
       
         
     }

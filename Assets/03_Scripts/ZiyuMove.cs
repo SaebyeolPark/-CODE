@@ -15,18 +15,18 @@ public class ZiyuMove : MonoBehaviour
     Transform playerTr;
     zFoxVirtualPad vpad;
     Rigidbody2D rigid;
-    Animator animator;
+  //  Animator animator;
     Vector3 targetPosition;
     // Start is called before the first frame update
     void Start()
     {
         playerTr = GameObject.FindWithTag("Player").transform;
-        animator = GetComponent<Animator>();
-        // AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+       // animator = GetComponent<Animator>();
+         AudioSource audioSource = gameObject.AddComponent<AudioSource>();
         timer = 0;
         // waitingTime = 2;
 
-        animator = GetComponent<Animator>();
+      //  animator = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
         // spriteRenderer = GetComponent<SpriteRenderer>();
         //  saveNLoad = FindObjectOfType<SaveNLoad>();
@@ -34,7 +34,7 @@ public class ZiyuMove : MonoBehaviour
         //    currentSceneName = SceneManager.GetActiveScene().name;
         // menuController = FindObjectOfType<MenuController>();
     }
-
+    /*
     // Update is called once per frame
     void Update()
     {
@@ -137,67 +137,57 @@ public class ZiyuMove : MonoBehaviour
                 animator.speed = 0;
             }
         }
+    }*/
+    public void LeftMove()
+    {
+        Animator animator;
+        animator = GetComponent<Animator>();
+
+        animator.speed = 1;
+
+        animator.SetBool("isLeft", true);
+        animator.SetBool("isRight", false);
+        animator.SetBool("isBack", false);
+        animator.SetBool("isFront", false);
     }
-        void Move()
-        {
-            xDir = playerTr.position.x - transform.position.x;
-            yDir = playerTr.position.y - transform.position.y;
-            //쫓기
-            if (playerTr != null)
-            {
-                //animator.speed = 0;
+    public void RightMove()
+    {
+        Animator animator;
+        animator = GetComponent<Animator>();
+        animator.speed = 1;
 
-                /*
-                    if (Mathf.Abs(xDir) < 1 && Mathf.Abs(yDir) < 1f)
-                    {
-                        transform.position = playerTr.position;
-                    }
-                    else
-                    {*/
-                animator.speed = 1;
-                transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * speed);
-                if (Mathf.Abs(xDir) > Mathf.Abs(yDir))
-                {
-                    if (xDir > 0)
-                    {
-                        // transform.rotation = Quaternion.Euler(0, 0, 90);
-                        animator.SetBool("isRight", true);
-                        animator.SetBool("isLeft", false);
-                        animator.SetBool("isBack", false);
-                        animator.SetBool("isFront", false);
-                    }
-                    else
-                    {
-                        // transform.rotation = Quaternion.Euler(0, 0, 270);
-                        animator.SetBool("isLeft", true);
-                        animator.SetBool("isRight", false);
-                        animator.SetBool("isBack", false);
-                        animator.SetBool("isFront", false);
-                    }
-                }
-                else
-                {
-                    if (yDir > 0)
-                    {
-                        // transform.rotation = Quaternion.Euler(0, 0, 180);
-                        animator.SetBool("isFront", true);
-                        animator.SetBool("isRight", false);
-                        animator.SetBool("isBack", false);
-                        animator.SetBool("isLeft", false);
-                    }
-                    else
-                    {
-                        // transform.rotation = Quaternion.Euler(0, 0, 0);
-                        animator.SetBool("isBack", true);
-                        animator.SetBool("isRight", false);
-                        animator.SetBool("isLeft", false);
-                        animator.SetBool("isFront", false);
-                    }
-                }
-            }
+        animator.SetBool("isLeft", false);
+        animator.SetBool("isRight", true);
+        animator.SetBool("isBack", false);
+        animator.SetBool("isFront", false);
+    }
+    public void FrontMove()
+    {
+        Animator animator;
+        animator = GetComponent<Animator>();
+        animator.speed = 1;
 
+        animator.SetBool("isLeft", false);
+        animator.SetBool("isRight", false);
+        animator.SetBool("isBack", false);
+        animator.SetBool("isFront", true);
+    }
+    public void BackMove()
+    {
+        Animator animator;
+        animator = GetComponent<Animator>();
+        animator.speed = 1;
 
-            //}
-        }
+        animator.SetBool("isLeft", false);
+        animator.SetBool("isRight", false);
+        animator.SetBool("isBack", true);
+        animator.SetBool("isFront", false);
+    }
+   public void StopAnimation()
+    {
+        Animator animator;
+        animator = GetComponent<Animator>();
+        animator.speed = 0;
+    }
     }
 
