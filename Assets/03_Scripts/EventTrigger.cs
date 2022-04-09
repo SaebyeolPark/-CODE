@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EventTrigger : MonoBehaviour
 {
@@ -116,8 +117,11 @@ public class EventTrigger : MonoBehaviour
                         //미술창고이벤트
                         ArtStorageEvent();
                         
-                        //2층 인형 이벤트
-                        DollEvent(); 
+                        //2층 인형 스토리이벤트
+                        DollEvent();
+                        //인형 갇힘
+                        DollEventMain();
+
                         // isTrigger = false;
                         isButton = false;
                         
@@ -129,6 +133,7 @@ public class EventTrigger : MonoBehaviour
                         {
                             isused = true;
                         }
+                        
 
                         //아이템
                         if (gameObject.name == "우측서류")
@@ -191,11 +196,40 @@ public class EventTrigger : MonoBehaviour
         if (gameObject.name == "무언가를 찾는 학생")
         {
             GameManager.instance.isDollEvent = true;
-           // Inventory.instance.GetItem(1003);
 
         }
     }
-    
+    void DollEventMain()
+    {
+        if (gameObject.name == "중앙에 몰려있는 학생들")
+        {
+            GameManager.instance.isDollEventMain = true;
+            GameManager.instance.talkIndex = 66;
+            GameManager.instance.isControl = false;
+            GameManager.instance.isDollEvent = false;
+        }
+        if (gameObject.name == "곰인형조사")
+        {
+            GameManager.instance.isGetDoll = true;
+            Inventory.instance.GetItem(1013);
+
+        }
+        if (gameObject.name == "문조사")
+        {
+            GameManager.instance.talkIndex = 77;
+            GameManager.instance.isControl = false;
+            GameManager.instance.playerRepeat = 0;
+            Debug.Log("문조사 확인");
+            GameManager.instance.isGetDollEnding = true;
+        }
+        if(gameObject.name=="무언가 찾는 학생")
+        {
+            GameManager.instance.isGetDollEnding = false;
+            SceneManager.LoadScene("2FloorLeftF-2");
+
+        }
+    }
+   
     void ArtClassEvent()
     {
 

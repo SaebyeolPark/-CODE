@@ -39,7 +39,10 @@ public class GameManager : MonoBehaviour
     public bool end1Floor; //1층 끝
     //2층시작
     public bool secondFloorFirst;
-    public bool isDollEvent; //인형이벤트
+    public bool isDollEvent; //인형스토리이벤트
+    public bool isDollEventMain; //인형갇힘
+    public bool isGetDoll; //인형주웟니?
+    public bool isGetDollEnding; //인형엔딩이벤트
 
     public void Action(GameObject scanObj)
     {
@@ -94,9 +97,14 @@ public class GameManager : MonoBehaviour
                 if (int.Parse(talkData.Split(':')[1]) == 3)
                 {
                     scanName = "이지유";
-                  //  portraitImg.color = new Color(1, 1, 1, 0);
+                    //  portraitImg.color = new Color(1, 1, 1, 0);
                 }
-                    
+                else if (int.Parse(talkData.Split(':')[1]) == 8)
+                {
+                    scanName = "반중앙에서 떠들던 학생들";
+                    portraitImg.color = new Color(1, 1, 1, 0);
+                }
+
             }
             else
             {
@@ -137,6 +145,11 @@ public class GameManager : MonoBehaviour
                 else if (int.Parse(talkData.Split(':')[1]) == 7)
                 {
                     //scanName = "무언가를 찾는 학생";
+                    portraitImg.color = new Color(1, 1, 1, 0);
+                }
+                else if (int.Parse(talkData.Split(':')[1]) == 8)
+                {
+                    scanName = "반중앙에서 떠들던 학생들";
                     portraitImg.color = new Color(1, 1, 1, 0);
                 }
 

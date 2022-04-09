@@ -61,7 +61,49 @@ public class EventTriggersController : MonoBehaviour
 
             }
         }
-      
+        /*else
+        {
+            for (int i = 0; i < offTriggers.Length; i++)
+            {
 
+                offTriggers[i].gameObject.SetActive(true); 
+
+            }
+            for (int i = 0; i < onTriggers.Length; i++)
+            {
+                onTriggers[i].SetActive(false);
+
+            }
+        }*/
+
+        if (GameManager.instance.isGetDoll)
+        {
+            for (int i = 0; i < offTriggers.Length; i++)
+            {
+
+                offTriggers[i].gameObject.SetActive(false); //ARTEVENTTRIGGEROFF가 켜져있다면 숨기기
+
+            }
+            for (int i = 0; i < onTriggers.Length; i++)
+            {
+                onTriggers[i].SetActive(true);
+
+            }
+        }
+
+        if (GameManager.instance.isGetDollEnding)
+        {
+            for (int i = 0; i < offTriggers.Length; i++)
+            {
+
+                offTriggers[i].gameObject.SetActive(false); //ARTEVENTTRIGGEROFF가 켜져있다면 숨기기
+
+            }
+            for (int i = 0; i < onTriggers.Length; i++)
+            {
+                onTriggers[i].SetActive(true);
+
+            }
+        }
     }
 }

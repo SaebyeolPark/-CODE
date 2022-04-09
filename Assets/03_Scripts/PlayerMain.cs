@@ -11,6 +11,9 @@ public class PlayerMain : MonoBehaviour
     //public float xMax, xMin, yMax, yMin;
     private Quaternion Right = Quaternion.identity;
     public GameObject ziyu;
+    public GameObject students;
+    public GameObject studentsBalloon;
+    public GameObject blackBack;
     public GameObject saveNLoadPanel;
     public static PlayerMain instance = null;
     public bool isOpeningEnenmy = false;
@@ -31,6 +34,7 @@ public class PlayerMain : MonoBehaviour
     public GameObject endingIllu;
     GameObject scanObject;
     ZiyuMove ziyuMove;
+    StudentMove studentMove;
 
     NpcMove npcMove;
 
@@ -161,18 +165,26 @@ public class PlayerMain : MonoBehaviour
             {
                 OpeningMove();
             }
-            else if (GameManager.instance.isNurseEvent == true&&GameManager.instance.firstEnterNurseRoom==false)
+            else if (GameManager.instance.isNurseEvent == true && GameManager.instance.firstEnterNurseRoom == false)
             {
                 NurseEventMove();
             } else if (GameManager.instance.isEnding == true)
             {
                 EndingMove();
-            } else if (isArtTrigger==true)
+            } else if (isArtTrigger == true)
             {
                 ArtEventMove();
-            }else if (GameManager.instance.end1Floor == true && GameManager.instance.secondFloorFirst == false && currentSceneName == "2FloorLeftS")
+            } else if (GameManager.instance.end1Floor == true && GameManager.instance.secondFloorFirst == false && currentSceneName == "2FloorLeftS")
             {
                 SecondFloorStart();
+            }
+            else if (GameManager.instance.isDollEventMain == true && GameManager.instance.isGetDollEnding == false)
+            {
+                DollMainMove();
+            }
+            else if (GameManager.instance.isGetDollEnding == true && GameManager.instance.isDollEventMain == true)
+            {
+                DollEndingMove();
             }
         }
  //move
@@ -757,8 +769,164 @@ public class PlayerMain : MonoBehaviour
         }
     }
 
-        
-    
+    void DollMainMove()
+    {
+        if (GameManager.instance.talkIndex == 66)
+        {
+            if (currentSceneName != "2FloorLeftS")
+            {
+                SceneManager.LoadScene("2FloorLeftS");
+                transform.position = new Vector3(2.3f, 2f, 0);
+                ziyu.SetActive(true);
+                students.SetActive(true);
+                CameraMove.instance.transform.position = new Vector3(1f, -1.5f, CameraMove.instance.transform.position.z);
+
+            }
+            else
+            {
+                if (transform.position.y > -3f)
+                {
+                    animator.speed = 1;
+                    animator.SetBool("isLeft", false);
+                    animator.SetBool("isRight", false);
+                    animator.SetBool("isBack", false);
+                    animator.SetBool("isFront", true);
+                    transform.Translate(2.5f * Time.deltaTime * Vector2.down);
+                }
+                else
+                {
+                    animator.speed = 0;
+                    animator.SetBool("isFront", true);
+                    animator.SetBool("isRight", false);
+                    animator.SetBool("isBack", false);
+                    animator.SetBool("isLeft", false);
+                    GameManager.instance.isDialog = true;
+                    GameManager.instance.Action(gameObject);
+                    studentMove = FindObjectOfType<StudentMove>();
+                    studentMove.StopAnimation();
+                    ziyuMove = FindObjectOfType<ZiyuMove>();
+                    ziyuMove.StopAnimation();
+                }
+            }
+
+        }
+        else if (GameManager.instance.playerRepeat == 5)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y - 5, 0);
+            students.transform.position = new Vector3(2.5f, -2.7f, 0);
+            CameraMove.instance.VibrateForTime(0.4f);
+            // CameraMove.instance.VibrateForTime(0);
+
+            GameManager.instance.Pause();
+            /*
+            timer += Time.deltaTime;
+            if (timer > 0.4f)
+            {
+                GameManager.instance.playerRepeat = 6;
+                timer = 0;
+
+            }*/
+           GameManager.instance.playerRepeat = 6;
+        }
+        else if (GameManager.instance.playerRepeat == 6)
+        {
+            studentsBalloon.SetActive(true);
+            studentsBalloon.transform.position = students.transform.position;
+            students.SetActive(false);
+            CameraMove.instance.transform.position = Vector3.Lerp(CameraMove.instance.transform.position, new Vector3(1f, -1.5f, CameraMove.instance.transform.position.z), 0.05f);
+
+            //웃음소리
+
+            //암전
+            timer += Time.deltaTime;
+            if (timer > 1.0f)
+            {
+                blackBack.transform.position = new Vector3(1f, -1.5f, 0);
+                blackBack.SetActive(true);
+
+                if (timer > 1.7f)
+                {
+                    timer = 0;
+                    GameManager.instance.playerRepeat = 7;
+                }
+            }
+
+        }
+        else if (GameManager.instance.playerRepeat == 10)
+        {
+            SceneManager.LoadScene("2FloorUtilRoom");
+            CameraMove.instance.transform.position = new Vector3(0, 0, CameraMove.instance.transform.position.z);
+           
+            transform.position = new Vector3(-3.5f, 2f, 0);
+           
+                GameManager.instance.playerRepeat = 11;
+                              
+        }else if (GameManager.instance.playerRepeat == 11)
+        {
+            timer += Time.deltaTime;
+            if (timer > 0.5f)
+            {
+                blackBack.SetActive(false);
+                GameManager.instance.playerRepeat = 12;
+                timer = 0;
+
+            }
+        }
+        else if (GameManager.instance.playerRepeat == 15)
+        {
+            ziyu.SetActive(false);
+            GameManager.instance.Pause();
+            GameManager.instance.isControl = true;
+            GameManager.instance.isDollEvent = false;
+         //   GameManager.instance.isDollEventMain = false;
+        }
+        else
+        {
+            GameManager.instance.isDialog = true;
+            GameManager.instance.Action(gameObject);
+        }
+    }
+
+    void DollEndingMove()
+    {
+        if (GameManager.instance.talkIndex == 77)
+        {
+            ziyu.SetActive(true);
+            ziyuMove = FindObjectOfType<ZiyuMove>();
+            ziyuMove.StopAnimation();
+        }
+        if (GameManager.instance.playerRepeat == 11)
+        {
+            blackBack.SetActive(true);
+            GameManager.instance.Pause();
+            blackBack.transform.position = new Vector3(CameraMove.instance.gameObject.transform.position.x, CameraMove.instance.gameObject.transform.position.y,0);
+            
+            GameManager.instance.playerRepeat = 12;
+        }else if(GameManager.instance.playerRepeat == 13)
+        {
+            blackBack.SetActive(false);
+            SceneManager.LoadScene("2FloorLeftS");
+            transform.position = new Vector3(2.3f, -2.8f, 0);
+            CameraMove.instance.gameObject.transform.position = new Vector3(2.3f, -2.8f, CameraMove.instance.transform.position.z);
+            GameManager.instance.playerRepeat = 14;
+
+        }
+        else if (GameManager.instance.playerRepeat == 23)
+        {
+            ziyu.SetActive(false);
+            GameManager.instance.Pause();
+            GameManager.instance.isControl = true;
+            GameManager.instance.isGetDoll = false;
+            GameManager.instance.isDollEventMain = false;
+        }
+        else
+        {
+            GameManager.instance.isDialog = true;
+            GameManager.instance.Action(gameObject);
+        }
+    }
+
+    //이동
     void Move()
     {
 

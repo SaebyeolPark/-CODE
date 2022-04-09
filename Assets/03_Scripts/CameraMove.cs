@@ -59,6 +59,7 @@ public class CameraMove : MonoBehaviour
                 }
 
             }
+
             if (PlayerMain.instance.isEndingCamera == true)
             {
 				targetX = (player.position.x + FirstEnemyMain.instance.gameObject.transform.position.x) / 2;
@@ -66,10 +67,12 @@ public class CameraMove : MonoBehaviour
 				target = new Vector3(targetX, targetY, player.position.z - 10);
 				transform.position = Vector3.Lerp(transform.position, target, 0.05f);
 			}
+
 			if (shakeTime > 0)
 			{
 				transform.position = Random.insideUnitSphere * shakeAmount + initialPosition;
 				shakeTime -= Time.deltaTime;
+				Debug.Log(shakeTime);
             }
             else
             {
